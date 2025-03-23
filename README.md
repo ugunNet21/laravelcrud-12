@@ -54,3 +54,20 @@ php artisan vendor:publish --provider="Nwidart\Modules\LaravelModulesServiceProv
 
 - cek namespace di controller dan seeder harus sama
 - cek namespace di model harus sama
+
+### Install Laravolt
+
+````
+composer require laravolt/indonesia
+php artisan vendor:publish --provider="Laravolt\Indonesia\ServiceProvider"
+php artisan laravolt:indonesia:seed
+
+```
+
+### Install Spatie
+
+````
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+````
