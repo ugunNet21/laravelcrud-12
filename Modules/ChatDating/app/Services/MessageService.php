@@ -1,5 +1,7 @@
 <?php
-namespace App\Services;
+// namespace App\Services;
+namespace Modules\ChatDating\app\Services;
+
 
 use Modules\ChatDating\app\Models\Message;
 
