@@ -1,56 +1,47 @@
 <?php
-
 namespace Modules\ChatDating\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Modules\ChatDating\app\Http\Requests\StoreFriendshipRequest;
+use Modules\ChatDating\app\Http\Requests\UpdateFriendshipRequest;
+use Modules\ChatDating\app\Models\Friendship;
+use Modules\ChatDating\app\Services\FriendshipService;
 
 class FriendshipController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $friendshipService;
+
+    public function __construct(FriendshipService $friendshipService)
+    {
+        $this->friendshipService = $friendshipService;
+    }
+
     public function index()
     {
-        return view('chatdating::index');
+        $friendships = $this->friendshipService->getAllFriendships();
+        return response()->json($friendships);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreFriendshipRequest $request)
     {
-        return view('chatdating::create');
+        $friendship = $this->friendshipService->createFriendship($request->validated());
+        return response()->json($friendship, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function show(Friendship $friendship)
     {
-        return view('chatdating::show');
+        return response()->json($friendship);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function update(UpdateFriendshipRequest $request, Friendship $friendship)
     {
-        return view('chatdating::edit');
+        $friendship = $this->friendshipService->updateFriendship($friendship, $request->validated());
+        return response()->json($friendship);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+    public function destroy(Friendship $friendship)
+    {
+        $this->friendshipService->deleteFriendship($friendship);
+        return response()->json(null, 204);
+    }
 }

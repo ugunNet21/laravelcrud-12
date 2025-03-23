@@ -1,56 +1,47 @@
 <?php
-
 namespace Modules\ChatDating\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Modules\ChatDating\app\Http\Requests\StoreMessageRequest;
+use Modules\ChatDating\app\Http\Requests\UpdateMessageRequest;
+use Modules\ChatDating\app\Models\Message;
+use Modules\ChatDating\app\Services\MessageService;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $messageService;
+
+    public function __construct(MessageService $messageService)
+    {
+        $this->messageService = $messageService;
+    }
+
     public function index()
     {
-        return view('chatdating::index');
+        $messages = $this->messageService->getAllMessages();
+        return response()->json($messages);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreMessageRequest $request)
     {
-        return view('chatdating::create');
+        $message = $this->messageService->createMessage($request->validated());
+        return response()->json($message, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function show(Message $message)
     {
-        return view('chatdating::show');
+        return response()->json($message);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function update(UpdateMessageRequest $request, Message $message)
     {
-        return view('chatdating::edit');
+        $message = $this->messageService->updateMessage($message, $request->validated());
+        return response()->json($message);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+    public function destroy(Message $message)
+    {
+        $this->messageService->deleteMessage($message);
+        return response()->json(null, 204);
+    }
 }
