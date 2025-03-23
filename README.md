@@ -62,7 +62,7 @@ composer require laravolt/indonesia
 php artisan vendor:publish --provider="Laravolt\Indonesia\ServiceProvider"
 php artisan laravolt:indonesia:seed
 
-```
+````
 
 ### Install Spatie
 
