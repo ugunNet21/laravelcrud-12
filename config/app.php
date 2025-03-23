@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\ServiceProvider;
+
 return [
 
     /*
@@ -122,5 +124,29 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        // App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        // App\Providers\EventServiceProvider::class,
+        // App\Providers\RouteServiceProvider::class,
+        // Laravel\Passport\PassportServiceProvider::class, // fixing  passport
+        // Modules\ChatDating\App\Providers\ChatDatingServiceProvider::class,
+        // Spatie\Permission\PermissionServiceProvider::class,
+        // Modules\Elearning\App\Providers\ElearningServiceProvider::class,
+        // Modules\Murid\App\Providers\MuridServiceProvider::class,
+        // Modules\Perpustakaan\App\Providers\PerpustakaanServiceProvider::class,
+        // Modules\PPDB\App\Providers\PPDBServiceProvider::class,
+        // Modules\SPP\App\Providers\SPPServiceProvider::class,
+
+    ])->toArray(),
 
 ];
