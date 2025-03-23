@@ -1,0 +1,12 @@
+{
+    "name": "ChatDating",
+    "alias": "chatdating",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+
+        "Modules\\ChatDating\\app\\Providers\\ChatDatingServiceProvider"
+    ],
+    "files": []
+}

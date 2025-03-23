@@ -134,12 +134,12 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
-        // App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        // App\Providers\EventServiceProvider::class,
-        // App\Providers\RouteServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
         // Laravel\Passport\PassportServiceProvider::class, // fixing  passport
-        // Modules\ChatDating\App\Providers\ChatDatingServiceProvider::class,
+        Modules\ChatDating\app\Providers\ChatDatingServiceProvider::class, // perhatikan alamat harus sesuai dengan namespace dan penulisan folder
         // Spatie\Permission\PermissionServiceProvider::class,
         // Modules\Elearning\App\Providers\ElearningServiceProvider::class,
         // Modules\Murid\App\Providers\MuridServiceProvider::class,
