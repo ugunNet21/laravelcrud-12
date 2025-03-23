@@ -140,6 +140,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // Laravel\Passport\PassportServiceProvider::class, // fixing  passport
         Modules\ChatDating\app\Providers\ChatDatingServiceProvider::class, // perhatikan alamat harus sesuai dengan namespace dan penulisan folder
+        Modules\Blog\app\Providers\BlogServiceProvider::class,
         // Spatie\Permission\PermissionServiceProvider::class,
         // Modules\Elearning\App\Providers\ElearningServiceProvider::class,
         // Modules\Murid\App\Providers\MuridServiceProvider::class,
