@@ -13,7 +13,7 @@ class Friendship extends Model
     /**
      * The attributes that are mass assignable.
      */
-
+    protected $fillable = ['user_id', 'friend_id', 'status'];
     public function user()
     {
         return $this->belongsTo(UserChat::class);

@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'user_chats'),
     ],
 
     /*
@@ -38,11 +38,11 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'user_chats',
         ],
         'api' => [
             'driver' => 'token', // Or 'passport', if using Laravel Passport
-            'provider' => 'users',
+            'provider' => 'users_chats',
         ],
     ],
 
@@ -66,7 +66,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', Modules\ChatDating\app\Models\UserChat::class),
         ],
 
         // 'users' => [
