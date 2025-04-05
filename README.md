@@ -71,3 +71,12 @@ composer require spatie/laravel-permission
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 
 ````
+
+## Running Seeder
+
+````
+php artisan db:seed --class=Modules\\ChatDating\\database\\seeders\\UserChatSeeder
+php artisan db:seed --class=Modules\\ChatDating\\database\\seeders\\FriendshipSeeder
+php artisan db:seed --class=Modules\\ChatDating\\database\\seeders\\MessageSeeder
+
+````

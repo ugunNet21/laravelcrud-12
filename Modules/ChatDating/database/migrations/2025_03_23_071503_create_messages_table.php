@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('receiver_id');
             $table->text('message');
             $table->timestamp('read_at')->nullable();
-            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('sender_id')->references('id')->on('user_chats')->onDelete('cascade');
+            $table->foreign('receiver_id')->references('id')->on('user_chats')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 class UserChat extends Model
 {
     use HasFactory, HasRoles;
-
+    protected $guard_name = 'web';
     /**
      * The attributes that are mass assignable.
      */
