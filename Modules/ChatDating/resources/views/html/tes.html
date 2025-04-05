@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-list, .friends-list, .chat-box {
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.user-list, .friends-list {
+    width: 25%;
+}
+
+.chat-box {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+#message-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#send-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: #0056b3;
+}
+  </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Daftar Pengguna -->
+        <div class="user-list">
+            <h2>User List</h2>
+            <ul id="user-list"></ul>
+        </div>
+
+        <!-- Daftar Teman -->
+        <div class="friends-list">
+            <h2>Friends List</h2>
+            <ul id="friends-list"></ul>
+        </div>
+
+        <!-- Kotak Chat -->
+        <div class="chat-box">
+            <h2>Chat</h2>
+            <div id="chat-messages"></div>
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const userList = document.getElementById('user-list');
+    const friendsList = document.getElementById('friends-list');
+    const chatMessages = document.getElementById('chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+
+    let currentUser = null; // Pengguna yang sedang dipilih untuk chat
+    let users = []; // Daftar pengguna
+    let friendships = []; // Daftar persahabatan
+    let messages = []; // Daftar pesan
+
+    // Fetch data dari API
+    async function fetchData() {
+        try {
+            // Ambil daftar pengguna
+            const usersResponse = await fetch('http://localhost:8000/api/user-chat');
+            if (!usersResponse.ok) throw new Error('Failed to fetch users');
+            users = await usersResponse.json();
+
+            // Ambil daftar persahabatan
+            const friendshipsResponse = await fetch('http://localhost:8000/api/friendships');
+            if (!friendshipsResponse.ok) throw new Error('Failed to fetch friendships');
+            friendships = await friendshipsResponse.json();
+
+            // Ambil daftar pesan
+            const messagesResponse = await fetch('http://localhost:8000/api/messages');
+            if (!messagesResponse.ok) throw new Error('Failed to fetch messages');
+            messages = await messagesResponse.json();
+
+            // Tampilkan data
+            renderUserList();
+            renderFriendsList();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Render daftar pengguna
+    function renderUserList() {
+        userList.innerHTML = '';
+        users.forEach(user => {
+            const li = document.createElement('li');
+            li.textContent = user.name;
+            li.addEventListener('click', () => {
+                currentUser = user;
+                loadChat(user.id);
+            });
+            userList.appendChild(li);
+        });
+    }
+
+    // Render daftar teman
+    function renderFriendsList() {
+        friendsList.innerHTML = '';
+        friendships.forEach(friendship => {
+            if (friendship.status === 'accepted') {
+                const friend = users.find(u => u.id === friendship.friend_id);
+                const li = document.createElement('li');
+                li.textContent = friend.name;
+                li.addEventListener('click', () => {
+                    currentUser = friend;
+                    loadChat(friend.id);
+                });
+                friendsList.appendChild(li);
+            }
+        });
+    }
+
+    // Load chat berdasarkan user ID
+    function loadChat(userId) {
+        chatMessages.innerHTML = '';
+        const userMessages = messages.filter(
+            m => m.sender_id === userId || m.receiver_id === userId
+        );
+        userMessages.forEach(msg => {
+            const sender = users.find(u => u.id === msg.sender_id);
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `${sender.name}: ${msg.message}`;
+            chatMessages.appendChild(messageDiv);
+        });
+    }
+
+    // Kirim pesan baru
+    sendButton.addEventListener('click', async function () {
+        const messageText = messageInput.value;
+        if (messageText.trim() !== '' && currentUser) {
+            const newMessage = {
+                sender_id: 2, // ID pengguna yang sedang login (contoh: User One)
+                receiver_id: currentUser.id,
+                message: messageText
+            };
+
+            // Kirim pesan ke API
+            try {
+                const response = await fetch('http://localhost:8000/api/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newMessage),
+                });
+
+                if (!response.ok) throw new Error('Failed to send message');
+
+                const result = await response.json();
+                messages.push(result); // Tambahkan pesan ke daftar pesan
+                loadChat(currentUser.id); // Muat ulang chat
+                messageInput.value = ''; // Kosongkan input
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+        }
+    });
+
+    // Muat data saat halaman dimuat
+    fetchData();
+});
+    </script>
+</body>
+</html>
