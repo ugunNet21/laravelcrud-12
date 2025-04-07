@@ -12,6 +12,13 @@
 
 ### Install the required packages
 
+## Install package
+
+````
+composer require laravel/wayfinder --dev
+
+````
+
 ## install Nwidart modules
 
 - penyebab sering eror adalah terkait mendaftarkan module dengan alamat namespace dan folder yg beda hasil generate module, jadi harus ganti ulang harus disamakan
