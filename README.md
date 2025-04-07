@@ -16,6 +16,7 @@
 
 ````
 composer require laravel/wayfinder --dev
+php artisan wayfinder:generate
 
 ````
 
@@ -85,5 +86,21 @@ php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvid
 php artisan db:seed --class=Modules\\ChatDating\\database\\seeders\\UserChatSeeder
 php artisan db:seed --class=Modules\\ChatDating\\database\\seeders\\FriendshipSeeder
 php artisan db:seed --class=Modules\\ChatDating\\database\\seeders\\MessageSeeder
+
+````
+
+````
+
+## Generate model, controller, migration, seeder
+
+- contoh: 
+````
+php artisan module:make-model Book Book -msc
+
+````
+- contoh bikin request
+
+````
+php artisan module:make-request CreatePostRequest Blog
 
 ````
